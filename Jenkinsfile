@@ -66,8 +66,9 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 dir('Setup_PD') {
-            // Run Ansible playbook for deployment
-                    sh '/usr/bin/ansible-playbook playbook.yml -i inventory.yml -e "compose_file=docker-compose.yml"'
+                // Run Ansible playbook for deployment
+                //ansiblePlaybook(credentialsId: 'franciscoAnsible', playbook: 'playbook.yml', inventory: 'inventory.yml', extras: '-e "compose_file=docker-compose.yml"')
+                    ansiblePlaybook(credentialsId: 'franciscoAnsible', inventory: 'inventories/a/hosts', playbook: 'playbook.yml')
                 }
             }
         }
