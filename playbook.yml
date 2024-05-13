@@ -1,7 +1,7 @@
 ---
 - hosts: all
   vars:
-    compose_file: "{{ compose_file }}"
+    compose_file: "docker-compose.yml"
     project_folder: pd_project
 
   tasks:
@@ -48,7 +48,7 @@
 
     - name: Wait for frontend to be responsive
       uri:
-        url: "http://localhost:80"
+        url: "http://localhost:8082"
         status_code: 200
         timeout: 10
         return_content: false
