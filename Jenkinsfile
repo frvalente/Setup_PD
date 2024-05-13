@@ -9,7 +9,7 @@ pipeline {
                         git pull
                         cd ..
                     else
-                        git clone https://github.com/pmcoliveira98/Backend_PD.git
+                        git clone https://github.com/frvalente/Backend_PD.git
                     fi
                 '''
                 sh '''
@@ -18,7 +18,7 @@ pipeline {
                         git pull
                         cd ..
                     else
-                        git clone https://github.com/pmcoliveira98/Frontend_PD.git
+                        git clone https://github.com/frvalente/Frontend_PD.git
                     fi
                 '''
                 sh '''
@@ -27,7 +27,7 @@ pipeline {
                         git pull
                         cd ..
                     else
-                        git clone https://github.com/pmcoliveira98/Setup_PD.git
+                        git clone https://github.com/frvalente/Setup_PD.git
                     fi
                 '''
             }
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 dir('Backend_PD') {
                     sh 'docker build -t pd-be -f Dockerfile .'
-                    sh 'docker tag pd-be pmcoliveira98/pd-be'
+                    sh 'docker tag pd-be frvalente/pd-be'
                 }
             }
         }
@@ -53,14 +53,14 @@ pipeline {
             steps {
                 dir('Frontend_PD') {
                     sh 'docker build -t pd-fe -f Dockerfile .'
-                    sh 'docker tag pd-fe pmcoliveira98/pd-fe'
+                    sh 'docker tag pd-fe frvalente/pd-fe'
                 }
             }
         }
         stage('Push Backend And Frontend Images') {
             steps {
-                sh 'docker push pmcoliveira98/pd-be'
-                sh 'docker push pmcoliveira98/pd-fe'
+                sh 'docker push frvalente/pd-be'
+                sh 'docker push frvalente/pd-fe'
             }
         }
 
