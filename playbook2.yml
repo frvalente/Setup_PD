@@ -1,0 +1,53 @@
+- hosts: all
+  become: true
+  vars:
+    compose_file: "{{ compose_file }}"
+    
+  tasks:
+    - name: Install prerequisites
+      apt:
+        pkg:
+          - aptitude
+          - python3-pip
+          - curl
+        state: latest
+        update_cache: yes
+        force_apt_get: yes
+
+    - name: Install Docker
+      shell: curl -sSL https://get.docker.com/ | sh
+
+    - name: Install Docker Compose
+      pip:
+        name: docker-compose
+        state: present
+
+    - name: Run Docker Compose
+      community.docker.docker_compose_v2:
+        project_name: my_project
+        chdir: "{{ playbook_dir }}"
+        compose_files:
+          - "{{ compose_file }}"
+        state: present
+        build: yes
+        recreate: always
+        pull: yes
+
+    - name: Ensure services are running
+      community.docker.docker_compose_v2:
+        project_name: my_project
+        chdir: "{{ playbook_dir }}"
+        compose_files:
+          - "{{ compose_file }}"
+        state: started
+
+    - name: Wait for frontend to be responsive
+      uri:
+        url: "http://localhost:80"
+        status_code: 200
+        timeout: 10
+        return_content: false
+      register: result
+      until: result is success
+      retries: 5
+      delay: 10
