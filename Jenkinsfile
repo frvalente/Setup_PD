@@ -63,14 +63,18 @@ pipeline {
                 sh 'docker push frvalente/pd-fe'
             }
         }
-
-
-
-
-         
-      
-
+        stage('Deploy With Ansible') {
+            steps {
+                dir('Setup_PD'){
+                    ansiblePlaybook(
+                        playbook: 'playbook.yml',
+                        inventory: 'inventory.yml',
+                        extraVars: [
+                            compose_file: 'docker-compose.yml'
+                        ]
+                    )
+                }
+            }
+        }
     }
-
-   
 }
