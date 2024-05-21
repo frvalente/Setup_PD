@@ -63,14 +63,5 @@ pipeline {
                 sh 'docker push frvalente/pd-fe'
             }
         }
-        stage('Deploy with Ansible') {
-            steps {
-                dir('Setup_PD') {
-                // Run Ansible playbook for deployment
-                //ansiblePlaybook(credentialsId: 'franciscoAnsible', playbook: 'playbook.yml', inventory: 'inventory.yml', extras: '-e "compose_file=docker-compose.yml"')
-                    ansiblePlaybook(credentialsId: 'franciscoAnsible', inventory: 'inventories/a/hosts', playbook: 'playbook.yml')
-                }
-            }
-        }
     }
 }
